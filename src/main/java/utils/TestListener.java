@@ -107,7 +107,6 @@ public class TestListener extends TestListenerAdapter implements ISuiteListener 
         log.info("onTestFailure " + sMethodName);
         Object currentClass = result.getInstance();
         String sErrorMessage = result.getThrowable().toString();
-        log.info((Supplier<String>) result.getThrowable());
 
         ExtentTestManager.getTest().log(Status.FAIL, sMethodName + " is failed : " + sErrorMessage);
 

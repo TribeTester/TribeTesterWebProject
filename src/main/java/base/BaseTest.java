@@ -2,72 +2,48 @@ package base;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.remote.MobileCapabilityType;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.json.simple.JSONObject;
-import org.openqa.selenium.*;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.testng.Assert;
+import org.junit.Assert;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.touch.TouchActions;
 import org.testng.annotations.*;
 import utils.ExtentTestManager;
+import utils.ReadProperties;
 import utils.TestListener;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
-
-import static org.testng.Assert.fail;
+import java.util.concurrent.TimeUnit;
 
 @Listeners({utils.TestListener.class})
 public class BaseTest {
 
-    // Parent class of Android and IOSDriver
-
     protected WebDriver driver = null;
-
-
 
     protected File file = new File("");
     public static String sSeperator = System.getProperty("file.separator");
 
-    public static final String CONFIG_FILE_PATH = "/src/main/java/config/config.properties";
-    public static final String ANDROID_CONFIG_FILE_PATH = "/src/main/java/config/android_config.properties";
+    public static final String CONFIG_FILE_PATH = "/src/main/resources/config/config.properties";
 
     protected FileInputStream configFis;
     Properties configProp = new Properties();
-    public static String sConfigPlatform;
 
-    protected FileInputStream platformConfigFis;
-    Properties platformConfigProp = new Properties();
-    String OS;
-    public static String sUDID;
-    public static String sAppPath;
-    public String sPlatformName;
-    public static String sPlatformVersion;
-    public static String sDeviceName;
-
-
-    FileInputStream fis;
     Properties properties;
     Logger log = Logger.getLogger(BaseTest.class);
+
+    String remoteAddress = "";
 
     @BeforeSuite
     public void setUp() throws Exception {
@@ -86,7 +62,6 @@ public class BaseTest {
 
         configFis = new FileInputStream(file.getAbsoluteFile() + CONFIG_FILE_PATH);
         configProp.load(configFis);
-        sConfigPlatform = configProp.getProperty("Platform");
 
     }
 //
@@ -95,29 +70,39 @@ public class BaseTest {
      * this method creates the driver depending upon the passed parameter (android
      * or iOS) and loads the properties files (config and test data properties
      * files).
+     * <p>
+     * //     * @param os         android or iOS
      *
-     //     * @param os         android or iOS
      * @param methodName - name of the method under execution
      * @throws Exception issue while loading properties files or creation of driver.
      */
-    @Parameters({"ModeOfExecution", "config", "environment","browser"})
+    @Parameters({"ModeOfExecution", "browser"})
     @BeforeMethod
     public void createDriver(@Optional("") String sModeOfExecution, @Optional("") String sBrowser, Method methodName) throws Exception {
 
+        sModeOfExecution = sModeOfExecution.toLowerCase().isEmpty() ? ReadProperties.getConfigProperties("ModeOfExecution") : sModeOfExecution;
+        sBrowser = sBrowser.toLowerCase().isEmpty() ? ReadProperties.getConfigProperties("Browser") : sBrowser;
 
-        if(sModeOfExecution.toLowerCase().contains("linear")){
-            this.driver = new InvokeBrowser().setDriver(sBrowser);
+
+        if (sModeOfExecution.toLowerCase().contains("local")) {
+            if (methodName.getName().toLowerCase().startsWith("web"))
+                this.driver = new InvokeDriver().setDriver(sBrowser.toLowerCase());
+
+            else if (methodName.getName().startsWith("mobile")) {
+
+            }
+        } else if (sModeOfExecution.toLowerCase().contains("remote")) {
+            if (methodName.getName().toLowerCase().startsWith("web"))
+                this.driver = new InvokeDriver().setRemoteDriver(sBrowser.toLowerCase(), remoteAddress);
+            else if (methodName.getName().startsWith("mobile")) {
+
+            }
+        } else {
+            Assert.fail("Please define mode of execution in either config or testng xml file");
         }
-        else if(sModeOfExecution.toLowerCase().contains("remote")){
-            String remoteAddress = "";
-            this.driver = new InvokeBrowser().setRemoteDriver(sBrowser,remoteAddress);
-        }
-        else{
-            DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-            this.driver = new AppiumDriver<MobileElement>(desiredCapabilities);
-        }
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
-
 
 
     /**
@@ -139,10 +124,8 @@ public class BaseTest {
     public void teardown() {
         log.info("-----------Shutting down driver-----------");
         driver.quit();
-//		driver.resetApp();
 
     }
-
 
 
     public void step(String sStepMessage) {
@@ -188,5 +171,12 @@ public class BaseTest {
         return driver;
     }
 
+
+    public void navigateToURL(String sURL) {
+        log.info("Navigating to URL");
+        driver.get(sURL);
+        log.info("Navigated to URL");
+
+    }
 
 }
