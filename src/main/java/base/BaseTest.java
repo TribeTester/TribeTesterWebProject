@@ -82,20 +82,19 @@ public class BaseTest {
 
         sModeOfExecution = sModeOfExecution.toLowerCase().isEmpty() ? ReadProperties.getConfigProperties("ModeOfExecution") : sModeOfExecution;
         sBrowser = sBrowser.toLowerCase().isEmpty() ? ReadProperties.getConfigProperties("Browser") : sBrowser;
-
+        InvokeDriver invokeDriver = new InvokeDriver();
 
         if (sModeOfExecution.toLowerCase().contains("local")) {
             if (methodName.getName().toLowerCase().startsWith("web"))
-                this.driver = new InvokeDriver().setDriver(sBrowser.toLowerCase());
-
+                this.driver = invokeDriver.setDriver(sBrowser.toLowerCase());
             else if (methodName.getName().startsWith("mobile")) {
-
+                this.driver = invokeDriver.getAppiumDriver(sModeOfExecution);
             }
         } else if (sModeOfExecution.toLowerCase().contains("remote")) {
             if (methodName.getName().toLowerCase().startsWith("web"))
-                this.driver = new InvokeDriver().setRemoteDriver(sBrowser.toLowerCase(), remoteAddress);
+                this.driver = invokeDriver.setRemoteDriver(sBrowser.toLowerCase(), remoteAddress);
             else if (methodName.getName().startsWith("mobile")) {
-
+                this.driver = invokeDriver.getAppiumDriver(sModeOfExecution);
             }
         } else {
             Assert.fail("Please define mode of execution in either config or testng xml file");
