@@ -17,8 +17,8 @@ public class SampleHeadspinTest {
     @BeforeMethod
     public void setUp() throws MalformedURLException {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setCapability("udid", "33874a380704");
-        desiredCapabilities.setCapability("deviceName", "33874a380704");
+        desiredCapabilities.setCapability("udid", "4739514632313498");
+        desiredCapabilities.setCapability("deviceName", "4739514632313498");
         desiredCapabilities.setCapability("platformName", "Android");
         desiredCapabilities.setCapability("appPackage", "com.android.settings");
         desiredCapabilities.setCapability("appActivity", "com.android.settings.Settings");
@@ -26,7 +26,7 @@ public class SampleHeadspinTest {
         desiredCapabilities.setCapability("noReset", true);
         desiredCapabilities.setCapability("autoAcceptAlerts", true);
 
-        URL remoteUrl = new URL("https://in-bng.headspin.io:7011/v0/b0662a23426b4dbda1e9529ab190a442/wd/hub");
+        URL remoteUrl = new URL("https://dev-de-fra-1.headspin.io:9001/v0/b0662a23426b4dbda1e9529ab190a442/wd/hub");
 
         driver = new AndroidDriver(remoteUrl, desiredCapabilities);
     }

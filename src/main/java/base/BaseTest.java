@@ -8,12 +8,14 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.junit.Assert;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.*;
 import utils.ExtentTestManager;
+import utils.ReadProperties;
 import utils.TestListener;
 
 import java.io.File;
@@ -33,17 +35,15 @@ public class BaseTest {
     protected File file = new File("");
     public static String sSeperator = System.getProperty("file.separator");
 
-    public static final String CONFIG_FILE_PATH = "/src/main/java/config/config.properties";
+    public static final String CONFIG_FILE_PATH = "/src/main/resources/config/config.properties";
 
     protected FileInputStream configFis;
     Properties configProp = new Properties();
-    public static String sConfigPlatform;
-
-
-
 
     Properties properties;
     Logger log = Logger.getLogger(BaseTest.class);
+
+    String remoteAddress = "";
 
     @BeforeSuite
     public void setUp() throws Exception {
@@ -62,7 +62,6 @@ public class BaseTest {
 
         configFis = new FileInputStream(file.getAbsoluteFile() + CONFIG_FILE_PATH);
         configProp.load(configFis);
-        sConfigPlatform = configProp.getProperty("Platform");
 
     }
 //
@@ -71,29 +70,36 @@ public class BaseTest {
      * this method creates the driver depending upon the passed parameter (android
      * or iOS) and loads the properties files (config and test data properties
      * files).
+     * <p>
+     * //     * @param os         android or iOS
      *
-     //     * @param os         android or iOS
      * @param methodName - name of the method under execution
      * @throws Exception issue while loading properties files or creation of driver.
      */
-    @Parameters({"ModeOfExecution", "config", "environment","browser"})
+    @Parameters({"ModeOfExecution", "browser"})
     @BeforeMethod
     public void createDriver(@Optional("") String sModeOfExecution, @Optional("") String sBrowser, Method methodName) throws Exception {
 
+        sModeOfExecution = sModeOfExecution.toLowerCase().isEmpty() ? ReadProperties.getConfigProperties("ModeOfExecution") : sModeOfExecution;
+        sBrowser = sBrowser.toLowerCase().isEmpty() ? ReadProperties.getConfigProperties("Browser") : sBrowser;
 
-        if(sModeOfExecution.toLowerCase().contains("linear")){
-            this.driver = new InvokeBrowser().setDriver(sBrowser);
-        }
-        else if(sModeOfExecution.toLowerCase().contains("remote")){
-            String remoteAddress = "";
-            this.driver = new InvokeBrowser().setRemoteDriver(sBrowser,remoteAddress);
-        }
-        else{
-            DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-            this.driver = new AppiumDriver<MobileElement>(desiredCapabilities);
+
+        if (sModeOfExecution.toLowerCase().contains("local")) {
+            if (methodName.getName().toLowerCase().startsWith("web"))
+                this.driver = new InvokeBrowser().setDriver(sBrowser.toLowerCase());
+            else if (methodName.getName().startsWith("mobile")) {
+
+            }
+        } else if (sModeOfExecution.toLowerCase().contains("remote")) {
+            if (methodName.getName().toLowerCase().startsWith("web"))
+                this.driver = new InvokeBrowser().setRemoteDriver(sBrowser.toLowerCase(), remoteAddress);
+            else if (methodName.getName().startsWith("mobile")) {
+
+            }
+        } else {
+            Assert.fail("Please define mode of execution in either config or testng xml file");
         }
     }
-
 
 
     /**
@@ -117,7 +123,6 @@ public class BaseTest {
         driver.quit();
 
     }
-
 
 
     public void step(String sStepMessage) {
