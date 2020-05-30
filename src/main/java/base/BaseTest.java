@@ -2,6 +2,7 @@ package base;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -10,6 +11,7 @@ import org.junit.Assert;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.touch.TouchActions;
 import org.testng.annotations.*;
 import utils.ExtentTestManager;
 import utils.ReadProperties;
@@ -23,6 +25,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 @Listeners({utils.TestListener.class})
 public class BaseTest {
@@ -83,19 +86,22 @@ public class BaseTest {
 
         if (sModeOfExecution.toLowerCase().contains("local")) {
             if (methodName.getName().toLowerCase().startsWith("web"))
-                this.driver = new InvokeBrowser().setDriver(sBrowser.toLowerCase());
+                this.driver = new InvokeDriver().setDriver(sBrowser.toLowerCase());
+
             else if (methodName.getName().startsWith("mobile")) {
 
             }
         } else if (sModeOfExecution.toLowerCase().contains("remote")) {
             if (methodName.getName().toLowerCase().startsWith("web"))
-                this.driver = new InvokeBrowser().setRemoteDriver(sBrowser.toLowerCase(), remoteAddress);
+                this.driver = new InvokeDriver().setRemoteDriver(sBrowser.toLowerCase(), remoteAddress);
             else if (methodName.getName().startsWith("mobile")) {
 
             }
         } else {
             Assert.fail("Please define mode of execution in either config or testng xml file");
         }
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
 

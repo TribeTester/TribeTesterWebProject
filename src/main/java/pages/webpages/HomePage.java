@@ -8,7 +8,7 @@ import javax.xml.ws.WebEndpoint;
 
 public class HomePage extends CommonWebPage {
 
-    HomePage(WebDriver driver) {
+    public HomePage(WebDriver driver) {
         super(driver);
     }
 

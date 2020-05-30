@@ -3,7 +3,7 @@ package tests;
 import base.BaseTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.mobilepages.HomePage;
+import pages.webpages.HomePage;
 import utils.ReadProperties;
 
 public class HackathonTest extends BaseTest {
@@ -27,7 +27,7 @@ public class HackathonTest extends BaseTest {
         navigateToURL(sURL);
 
         step("Login to application");
-//        homePage.
+        homePage.loginToMakeMyTrip("saurabhfromautomation@gmail.com","TribeTester@123");
 
 
 
