@@ -6,6 +6,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.util.concurrent.TimeUnit;
@@ -236,5 +237,15 @@ public class Actions {
         }
     }
 
+
+    public boolean isElementDisplayed(WebElement element,String sElementName,int iTimeOut){
+        try {
+            new WebDriverWait(driver, iTimeOut).until((ExpectedConditions.visibilityOf(element)));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
 
 }

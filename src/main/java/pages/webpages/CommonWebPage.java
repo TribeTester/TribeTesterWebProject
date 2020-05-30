@@ -5,10 +5,9 @@ import org.openqa.selenium.support.PageFactory;
 import utils.Actions;
 
 public class CommonWebPage extends Actions {
-    CommonWebPage(WebDriver driver) {
+    public CommonWebPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
-
     }
 
 }

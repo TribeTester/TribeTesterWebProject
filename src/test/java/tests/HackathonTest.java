@@ -10,11 +10,11 @@ public class HackathonTest extends BaseTest {
 
     String sURL;
 
-    HomePage homePage = new HomePage(driver);
+    HomePage homePage;
 
     @BeforeMethod
     public void loadData() {
-
+        homePage= new HomePage(driver);
         sURL = ReadProperties.getConfigProperties("WebAppUrl");
     }
 
