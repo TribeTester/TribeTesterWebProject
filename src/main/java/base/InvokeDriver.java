@@ -25,18 +25,21 @@ public class InvokeDriver {
 
 
     RemoteWebDriver driver;
+    public String chromeDriverPath = System.getProperty("user.dir")+"/Driver/chromedriver.exe";
+    public String firefoxDriverPath = System.getProperty("user.dir")+"/Driver/geckodriver.exe";
 
     public WebDriver initChromeDriver() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-extensions");
-        WebDriverManager.chromedriver().setup();
+        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
         return new ChromeDriver(options);
     }
 
     public WebDriver initFirefoxDriver() {
-        WebDriverManager.firefoxdriver().setup();
+
         FirefoxProfile firefoxProfile = new FirefoxProfile();
         FirefoxOptions options = new FirefoxOptions();
+        System.setProperty("webdriver.gecko.driver", firefoxDriverPath);
         firefoxProfile.setAcceptUntrustedCertificates(true);
         firefoxProfile.setAssumeUntrustedCertificateIssuer(true);
         options.setProfile(firefoxProfile);
