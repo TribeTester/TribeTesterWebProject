@@ -1,9 +1,9 @@
 package browserStack;
 
-import common.CommonTestManager;
+import base.BaseTest;
 import org.testng.annotations.Test;
 
-public class SampleTest extends CommonTestManager {
+public class SampleTest extends BaseTest {
 
     @Test
     public void Web() {

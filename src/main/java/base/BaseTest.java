@@ -166,4 +166,11 @@ public class BaseTest {
     }
 
 
+    public void navigateToURL(String sURL) {
+        log.info("Navigating to URL");
+        driver.get(sURL);
+        log.info("Navigated to URL");
+
+    }
+
 }

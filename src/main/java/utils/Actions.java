@@ -13,10 +13,10 @@ import java.util.concurrent.TimeUnit;
 public class Actions {
     WebDriver driver;
 
-    int SHORTWAIT = 5;
-    int MEDIUMWAIT = 8;
-    int LONGWAIT = 15;
-    int VERYLONGWAIT = 25;
+    public int SHORTWAIT = 5;
+    public int MEDIUMWAIT = 8;
+    public int LONGWAIT = 15;
+    public int VERYLONGWAIT = 25;
 
 
     protected org.apache.log4j.Logger log = Logger.getLogger(Actions.class);
@@ -80,7 +80,7 @@ public class Actions {
         }
     }
 
-    public void type(final WebElement element, final String textToType, String sElement, int iTimeOut) {
+    public void clearAndType(final WebElement element, final String textToType, String sElement, int iTimeOut) {
 
         try {
             waitForElementVisibility(element, sElement, iTimeOut);
