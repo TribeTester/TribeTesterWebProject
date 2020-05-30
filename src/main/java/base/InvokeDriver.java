@@ -1,9 +1,12 @@
 package base;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.remote.AndroidMobileCapabilityType;
+import io.appium.java_client.remote.AutomationName;
+import io.appium.java_client.remote.MobileCapabilityType;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,9 +18,10 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import utils.ReadProperties;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
-public class InvokeDriver  {
+public class InvokeDriver {
 
 
     RemoteWebDriver driver;
@@ -53,26 +57,60 @@ public class InvokeDriver  {
         return initChromeDriver();
     }
 
-//    public AppiumDriver getAppiumDriver() {
+    public AppiumDriver getAppiumDriver(String sModeOfExecution) {
+        AppiumDriver appiumDriver;
+        DesiredCapabilities capabilities = null;
+        String sAppFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "app" + File.separator + "MakeMyTrip.apk";
+        if (sModeOfExecution.equalsIgnoreCase("local")) {
+            capabilities = new DesiredCapabilities();
 
-//        DesiredCapabilities capabilities = new DesiredCapabilities();
-//
-//        capabilities.setCapability("appPackage", ReadProperties.getConfigProperties("appPackage"));
-//        capabilities.setCapability("appActivity", ReadProperties.getConfigProperties("appActivity"));
-//        capabilities.setCapability("platformName", "Android");
-//        capabilities.setCapability("platformVersion", ReadProperties.getConfigProperties("PlatformVersion"));
-//        capabilities.setCapability("deviceName", ReadProperties.getConfigProperties("androidDeviceName"));
-//        capabilities.setCapability("app", IBaseInterface.PROJECT_PATH + File.separator + "Resources" + File.separator + "mmt.apk");
-//        capabilities.setCapability("autoGrantPermissions", true);
-//        capabilities.setCapability("unicodekeyboard", true);
-//        capabilities.setCapability("resetkeyboard", true);
-//        capabilities.setCapability("noReset", true);
-//
-//        serverUrl = readProperties.getProperties("serverUrl");
-//        driver = new AndroidDriver<MobileElement>(new URL(serverUrl), capabilities);
-//        Logs.INFO("Driver in initAndroid() - " + driver.getSessionId());
+            capabilities.setCapability("appPackage", ReadProperties.getConfigProperties("appPackage"));
+            capabilities.setCapability("appActivity", ReadProperties.getConfigProperties("appActivity"));
+            capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, Platform.ANDROID);
+            capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 600);
+            capabilities.setCapability("platformVersion", ReadProperties.getConfigProperties("PlatformVersion"));
+            capabilities.setCapability("deviceName", ReadProperties.getConfigProperties("androidDeviceName"));
+            capabilities.setCapability("app", sAppFilePath);
+            capabilities.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
+            capabilities.setCapability("unicodekeyboard", true);
+            capabilities.setCapability(AndroidMobileCapabilityType.UNICODE_KEYBOARD, true);
+            capabilities.setCapability(AndroidMobileCapabilityType.RESET_KEYBOARD, true);
+            capabilities.setCapability(MobileCapabilityType.NO_RESET, true);
 
-//    }
+        } else if (sModeOfExecution.equalsIgnoreCase("Remote")) {
+            capabilities = new DesiredCapabilities();
+            capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, Platform.ANDROID);
+            capabilities.setCapability(MobileCapabilityType.UDID, ReadProperties.getConfigProperties("RemoteUDID"));
+            capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, ReadProperties.getConfigProperties("RemoteDeviceName"));
+            capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
+            capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 600);
+            capabilities.setCapability(MobileCapabilityType.NO_RESET, true);
+            capabilities.setCapability(AndroidMobileCapabilityType.APPLICATION_NAME, sAppFilePath);
+            capabilities.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, ReadProperties.getConfigProperties("appPackage"));
+            capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, ReadProperties.getConfigProperties("appActivity"));
+            capabilities.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
+            capabilities.setCapability(AndroidMobileCapabilityType.UNICODE_KEYBOARD, true);
+            capabilities.setCapability(AndroidMobileCapabilityType.RESET_KEYBOARD, true);
+        }
+        appiumDriver = new AndroidDriver<>(getAppiumServerURL(sModeOfExecution), capabilities);
+        return appiumDriver;
+    }
+
+    static URL getAppiumServerURL(String sModeOfExecution) {
+        URL appiumServerURL = null;
+
+        try {
+            if (sModeOfExecution.equalsIgnoreCase("Remote")) {
+                appiumServerURL = new URL("http://" + ReadProperties.getConfigProperties("LocalRemoteIPWithPort") + "/wd/hub");
+
+            } else if (sModeOfExecution.equalsIgnoreCase("Remote")) {
+                appiumServerURL = new URL("http://" + ReadProperties.getConfigProperties("RemoteIPWithPort") + "/wd/hub");
+            }
+        } catch (MalformedURLException ex) {
+            System.err.println("Error occurred in Remote Grid URL.");
+        }
+        return appiumServerURL;
+    }
 
 
     public RemoteWebDriver setRemoteDriver(String browserType, String ip) {

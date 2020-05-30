@@ -8,18 +8,15 @@ import utils.ReadProperties;
 
 public class HackathonTest extends BaseTest {
 
-
     String sURL;
 
-    HomePage homePage=new HomePage(driver);
+    HomePage homePage;
 
     @BeforeMethod
     public void loadData() {
-
+        homePage= new HomePage(driver);
         sURL = ReadProperties.getConfigProperties("WebAppUrl");
-
     }
-
 
     @Test
     public void WebMakeMyTripTest() {
@@ -27,10 +24,13 @@ public class HackathonTest extends BaseTest {
         navigateToURL(sURL);
 
         step("Login to application");
-        homePage.loginToMakeMyTrip("saurabhfromautomation@gmail.com","TribeTester@123");
-
-
+        homePage.loginToMakeMyTrip("saurabhfromautomation@gmail.com", "TribeTester@123");
 
     }
 
+
+    @Test
+    public void MobileMakeMyTripTest() {
+
+    }
 }

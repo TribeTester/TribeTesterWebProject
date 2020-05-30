@@ -3,16 +3,13 @@ package pages.webpages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import javax.xml.ws.WebEndpoint;
+import org.openqa.selenium.support.PageFactory;
 
 public class HomePage extends CommonWebPage {
 
     public HomePage(WebDriver driver) {
         super(driver);
     }
-
-
     @FindBy(id = "close")
     private WebElement closeIcon;
 
@@ -22,9 +19,8 @@ public class HomePage extends CommonWebPage {
     @FindBy(id = "username")
     private WebElement username;
 
-
     public void loginToMakeMyTrip(String sUsername, String sPassword) {
-        if (closeIcon.isDisplayed()) {
+        if (isElementDisplayed(closeIcon, "closeIcon", 1)) {
             click(closeIcon, "closeIcon", SHORTWAIT);
         }
         click(loginOrCreateAccount, "loginOrCreateAccount", SHORTWAIT);
