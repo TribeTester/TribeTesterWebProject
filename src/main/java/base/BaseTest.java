@@ -2,7 +2,6 @@ package base;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
-import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -11,7 +10,6 @@ import org.junit.Assert;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.touch.TouchActions;
 import org.testng.annotations.*;
 import utils.ExtentTestManager;
 import utils.ReadProperties;
@@ -92,6 +90,7 @@ public class BaseTest {
             driver.manage().window().maximize();
 
         } else if (sModeOfExecution.toLowerCase().contains("remote")) {
+            remoteAddress = ReadProperties.getConfigProperties("RemoteServerHeadSpin");
             this.driver = invokeDriver.setRemoteDriver(sBrowser.toLowerCase(), remoteAddress);
             driver.manage().window().maximize();
         } else {
@@ -113,8 +112,6 @@ public class BaseTest {
         return sValue;
 
     }
-
-
 
 
     public void step(String sStepMessage) {
