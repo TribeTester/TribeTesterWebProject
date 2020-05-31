@@ -82,6 +82,17 @@ mvn clean install -DskipTests=true
 
 
 ---
+
+__Configuration in Config.properties:__
+#Possible values for ModeOfExecution Local|Remote
+ModeOfExecution=Local
+#Possible values for Browser Chrome|Firefox
+Browser=chrome
+WebAppUrl= Make my trip url
+RemoteServerHeadSpin = Your remote URL of Headspin instance
+
+
+
 ## Prerequisites
 
  - __Java__
