@@ -51,6 +51,12 @@ public class HotelPage extends CommonWebPage {
     @FindBy(css = "#hlistpg_fr_user_rating input")
     private WebElement userRatingFilter;
 
+    @FindBy(id = "RoomType")
+    private WebElement roomSection;
+
+    @FindBy(xpath = "//*[@id='RoomType']//*[text()='SELECT ROOM']")
+    private WebElement firstRoom;
+
     public void selectAdultAndChildrenGuest(String sAdultGuestNo, String sChildrenGuestNo) {
         click(guest, "guest", SHORTWAIT);
         click(adultGuest.get(Integer.parseInt(sAdultGuestNo) - 1), "adultGuest", MEDIUMWAIT);
@@ -92,7 +98,7 @@ public class HotelPage extends CommonWebPage {
     }
 
     public void setPriceRange(int aAmount) {
-
+        sleep(2);
         int xOffsetValue = (int) (aAmount / 500 * 3.5);
         WebElement slider = getWebElement(By.cssSelector("span[class*='input-range__slider']"));
         Actions sliderAction = new Actions(driver);
@@ -114,5 +120,13 @@ public class HotelPage extends CommonWebPage {
         String sHotelName = getText(hotelElements.get(4).findElement(By.cssSelector("span[id^='htl_id_seo']")), "FifthHotelName", SHORTWAIT);
         click(hotelElements.get(4), "Fifth hotel", 5);
         return sHotelName;
+    }
+
+    public void scrollToRoomSection() {
+        javascriptScrollToElement(roomSection);
+    }
+
+    public void selectRoom() {
+        click(firstRoom, "firstRoom", MEDIUMWAIT);
     }
 }

@@ -19,13 +19,13 @@ public class HackathonTest extends BaseTest {
     @BeforeMethod
     public void loadData() {
         homePage = new HomePage(driver);
-        hotelPage=new HotelPage(driver);
+        hotelPage = new HotelPage(driver);
         sURL = ReadProperties.getConfigProperties("WebAppUrl");
 
 
         setTestDataProperties("WebMakeMyTripTestData");
-        sUsername= getProperty("EmailID");
-        sPassword= getProperty("Password");
+        sUsername = getProperty("EmailID");
+        sPassword = getProperty("Password");
 
     }
 
@@ -39,16 +39,16 @@ public class HackathonTest extends BaseTest {
         navigateToURL(sURL);
 
         step("click on hotel");
-        hotelPage=homePage.clickOnHotel();
+        hotelPage = homePage.clickOnHotel();
 
         step("select location");
         hotelPage.selectLocation("Goa");
 
         step("Select checkin and checkout date");
-        hotelPage.selectCheckInCheckOutDate("Jun 14","Jun 16");
+        hotelPage.selectCheckInCheckOutDate("Jun 14", "Jun 16");
 
         step("Select rooms and guests");
-        hotelPage.selectAdultAndChildrenGuest("2","2");
+        hotelPage.selectAdultAndChildrenGuest("2", "2");
 
         step("Select travelling reason");
         hotelPage.selectTravellingFor();
@@ -63,10 +63,15 @@ public class HackathonTest extends BaseTest {
         hotelPage.checkUserRatingChkbox();
 
         step("Scroll to fifth hotel and click on it");
-        String sHotelName=hotelPage.selectFifthHotel();
+        String sCurrentWindow=hotelPage.getCurrentWindowHandle();
+        String sHotelName = hotelPage.selectFifthHotel();
 
+        step("Go to room section");
+        hotelPage.switchToWindow(sCurrentWindow);
+        hotelPage.scrollToRoomSection();
 
-
+        step("Capture the information of room category ");
+        hotelPage.selectRoom();
 
 
 

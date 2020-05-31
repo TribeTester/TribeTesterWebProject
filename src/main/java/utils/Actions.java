@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.util.List;
+import java.util.Set;
 
 public class Actions {
     public WebDriver driver;
@@ -347,6 +348,22 @@ public class Actions {
     public void javascriptScrollToElement(WebElement element) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+
+    public void switchToWindow(String sParentWindowHandle) {
+
+        Set<String> windowHandles = driver.getWindowHandles();
+        for (String handle:windowHandles){
+            if(!sParentWindowHandle.contentEquals(handle)){
+                driver.switchTo().window(handle);
+            }
+        }
+
+    }
+
+    public String getCurrentWindowHandle() {
+        return driver.getWindowHandle();
     }
 
 
