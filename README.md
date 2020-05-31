@@ -66,15 +66,12 @@ mvn clean install -DskipTests=true
     - On clicking these will display detailed descriptions of execution
     - As this is a html report you can open it with browser
     - Features of report
-       - Test summary report (Pass, Fail, Skipped, Duration, Percentage, Charts and Suite level stats)
-       - Detailed Log output
-       - Json file attachments
+       - Test summary report (Pass, Fail, Skipped, Duration)
        - Detailed exception stacktrace of failed tests
 
 
  - _Local Dashboard (Run time report)_
     - Ability to view the current live test execution
-    - For reference <a href="https://i.ibb.co/FBDqcCN/live-dashboard.gif" target="_blank">watch video</a>
 
  - _Utilities_
     - Different Utilities exist to read Excel, JSON, XML, PDF, Properties files	
@@ -88,7 +85,7 @@ mvn clean install -DskipTests=true
 ## Prerequisites
 
  - __Java__
-    - Version: `jdk-1.7` or higher
+    - Version: `jdk-1.8` or higher
 	- Website: [link](https://java.com/en/)
 
  - __Apache Maven__
