@@ -25,8 +25,8 @@ public class InvokeDriver {
 
 
     RemoteWebDriver driver;
-    public String chromeDriverPath = System.getProperty("user.dir")+"/Driver/chromedriver.exe";
-    public String firefoxDriverPath = System.getProperty("user.dir")+"/Driver/geckodriver.exe";
+    public String chromeDriverPath = System.getProperty("user.dir")+"\\src\\main\\resources\\Driver\\chromedriver.exe";
+    public String firefoxDriverPath = System.getProperty("user.dir")+"\\src\\main\\resources\\Driver\\geckodriver.exe";
 
     public WebDriver initChromeDriver() {
         ChromeOptions options = new ChromeOptions();

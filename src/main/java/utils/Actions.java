@@ -28,7 +28,7 @@ public class Actions {
 
     public void click(WebElement element, String sElement, int iTimeOut) {
         try {
-            waitForElementVisibility(element, sElement, iTimeOut);
+            waitForElementToLoad(element, sElement);
             element.click();
             log.info("Clicked on " + sElement);
         } catch (TimeoutException we) {
@@ -75,12 +75,35 @@ public class Actions {
         }
     }
 
-    public void clearAndType(final WebElement element, final String textToType, String sElement, int iTimeOut) {
+    public boolean waitForElementToLoad(WebElement element,String sElement){
+        int iEndTime=50;
+        int iCount=0;
+        boolean bFoundElement=false;
 
+        while(iCount<iEndTime) {
+            iCount++;
+            try {
+                if (element.isDisplayed()) {
+                    bFoundElement = true;
+                    break;
+                }else{
+                    sleep(1);
+
+                }
+            } catch (Exception e) {
+                sleep(1);
+            }
+
+        }
+        return bFoundElement;
+    }
+
+    public void clearAndType(final WebElement element, final String textToType, String sElement, int iTimeOut) {
         try {
-            waitForElementVisibility(element, sElement, iTimeOut);
+            waitForElementToLoad(element, sElement);
             element.clear();
             element.sendKeys(textToType);
+            log.info("Entered "+textToType+" in "+sElement+" element");
         } catch (TimeoutException we) {
             log.error("Failed to retrieve the element within the time out!!");
             log.error("stack trace is" + we);
@@ -106,6 +129,12 @@ public class Actions {
             Assert.fail("Exception found while inputting text in text box " + e);
         }
     }
+
+    public void javascriptClick(WebElement element,String sElement) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].click();", element);
+    }
+
 
     public String getText(final WebElement element, String sElement, int iTimeOut) {
         String text = "";

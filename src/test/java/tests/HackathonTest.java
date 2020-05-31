@@ -14,7 +14,7 @@ public class HackathonTest extends BaseTest {
 
     @BeforeMethod
     public void loadData() {
-        homePage= new HomePage(driver);
+        homePage = new HomePage(driver);
         sURL = ReadProperties.getConfigProperties("WebAppUrl");
     }
 
@@ -26,11 +26,13 @@ public class HackathonTest extends BaseTest {
         step("Login to application");
         homePage.loginToMakeMyTrip("saurabhfromautomation@gmail.com", "TribeTester@123");
 
-    }
+        step("click on hotel");
+        homePage.clickOnHotel();
+
+        step("select location");
+        homePage.selectLocation("Goa");
 
 
-    @Test
-    public void MobileMakeMyTripTest() {
 
     }
 }
