@@ -1,0 +1,1 @@
+var data={"metadata":{"User":"DESKTOP-PLQCSG9","OS":"Windows 10","TotalTest":1},"Result":[{"Suite":"Default Suite","TestName":"WebMakeMyTripTest","Test":"TribeTesterWebMobile","Error":"---","TimeDuration":"47","Result":"Pass"}]}
