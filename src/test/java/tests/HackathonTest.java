@@ -56,9 +56,14 @@ public class HackathonTest extends BaseTest {
         step("Search for the hotels");
         hotelPage.searchHotel();
 
-        step("");
+        step("Filter by Amount");
+        hotelPage.setPriceRange(1000);
 
+        step("Check User rating Checkbox having 4+ rating");
         hotelPage.checkUserRatingChkbox();
+
+        step("Scroll to fifth hotel and click on it");
+        String sHotelName=hotelPage.selectFifthHotel();
 
 
 

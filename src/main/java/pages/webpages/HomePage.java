@@ -55,6 +55,7 @@ public class HomePage extends CommonWebPage {
         waitForElementToClick(continueButton,"continue button").submit();
         clearAndType(password, sPassword, "sPassword", LONGWAIT);
         waitForElementToClick(loginButton,"login button").submit();
+        waitForPageLoad();
         sleep(5);
 
 
@@ -62,6 +63,7 @@ public class HomePage extends CommonWebPage {
 
     public HotelPage clickOnHotel() {
         click(hotels, "hotels", SHORTWAIT);
+        waitForPageLoad();
         return new HotelPage(driver);
     }
 

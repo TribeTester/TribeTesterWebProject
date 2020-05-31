@@ -3,6 +3,7 @@ package pages.webpages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class HotelPage extends CommonWebPage {
     @FindBy(id = "hsw_search_button")
     private WebElement searchHotel;
 
-    @FindBy(xpath = "//div[normalize-space()='User Rating']//following-sibling::ul//li//input")
+    @FindBy(css = "#hlistpg_fr_user_rating input")
     private WebElement userRatingFilter;
 
     public void selectAdultAndChildrenGuest(String sAdultGuestNo, String sChildrenGuestNo) {
@@ -60,6 +61,7 @@ public class HotelPage extends CommonWebPage {
 
     public void clickApplyBtn() {
         click(applyBtn, "applyBtn", MEDIUMWAIT);
+        waitForPageLoad();
     }
 
     public void selectLocation(String slocation) {
@@ -85,16 +87,32 @@ public class HotelPage extends CommonWebPage {
 
     public void searchHotel() {
         click(searchHotel, "searchHotel", SHORTWAIT);
-        if(isElementDisplayed(getWebElement(By.cssSelector(".mapCont")),"map",2)){
-            if(isElementDisplayed(getWebElement(By.cssSelector(".mapClose")),"mapClose",2)){
-                getWebElement(By.cssSelector(".mapClose")).click();
-            }
-        }
+        waitForPageLoad();
+        getDriver().navigate().refresh();
+    }
 
+    public void setPriceRange(int aAmount) {
+
+        int xOffsetValue = (int) (aAmount / 500 * 3.5);
+        WebElement slider = getWebElement(By.cssSelector("span[class*='input-range__slider']"));
+        Actions sliderAction = new Actions(driver);
+        sliderAction.clickAndHold(slider)
+                .moveByOffset(xOffsetValue, 0)
+                .release().perform();
+        log.info("Selected Minimum price range");
+    }
+
+    public void checkUserRatingChkbox() {
+        waitForPageLoad();
+        click(userRatingFilter, "userRatingFilter", SHORTWAIT);
     }
 
 
-    public void checkUserRatingChkbox() {
-        click(userRatingFilter, "userRatingFilter", SHORTWAIT);
+    public String selectFifthHotel() {
+        List<WebElement> hotelElements = getWebElements(By.cssSelector("[id^=Listing_hotel_]"));
+        javascriptScrollToElement(hotelElements.get(4));
+        String sHotelName = getText(hotelElements.get(4).findElement(By.cssSelector("span[id^='htl_id_seo']")), "FifthHotelName", SHORTWAIT);
+        click(hotelElements.get(4), "Fifth hotel", 5);
+        return sHotelName;
     }
 }

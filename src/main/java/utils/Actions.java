@@ -3,21 +3,16 @@ package utils;
 import io.appium.java_client.MobileElement;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.util.List;
-import java.text.DecimalFormat;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class Actions {
-   public WebDriver driver;
+    public WebDriver driver;
 
     public int SHORTWAIT = 5;
     public int MEDIUMWAIT = 8;
@@ -33,7 +28,7 @@ public class Actions {
 
     public void click(WebElement element, String sElement, int iTimeOut) {
         try {
-            waitForElementToLoad(element, sElement,iTimeOut);
+            waitForElementToLoad(element, sElement, iTimeOut);
             element.click();
             log.info("Clicked on " + sElement);
         } catch (TimeoutException we) {
@@ -79,27 +74,28 @@ public class Actions {
                     + we);
         }
     }
-    public boolean waitForElementInvisible(WebElement element,String sElement){
 
-        log.info("waiting for "+sElement);
-        int iEndTime=50;
-        int iCount=0;
-        boolean bFoundElement=false;
+    public boolean waitForElementInvisible(WebElement element, String sElement) {
 
-        while(iCount<iEndTime) {
+        log.info("waiting for " + sElement);
+        int iEndTime = 50;
+        int iCount = 0;
+        boolean bFoundElement = false;
+
+        while (iCount < iEndTime) {
             iCount++;
             try {
-                if (!element.isEnabled()||!element.isDisplayed()) {
-                    log.info(sElement+" is Invisible");
+                if (!element.isEnabled() || !element.isDisplayed()) {
+                    log.info(sElement + " is Invisible");
                     bFoundElement = true;
                     break;
-                }else{
-                    log.info("Waiting for "+sElement+" element Invisible");
+                } else {
+                    log.info("Waiting for " + sElement + " element Invisible");
                     sleep(1);
 
                 }
             } catch (Exception e) {
-                log.info("Waiting for "+sElement+" element Invisible");
+                log.info("Waiting for " + sElement + " element Invisible");
                 sleep(1);
             }
 
@@ -108,37 +104,37 @@ public class Actions {
     }
 
 
+    public boolean waitForElementToLoad(WebElement element, String sElement, int iTimeOut) {
 
-    public boolean waitForElementToLoad(WebElement element,String sElement,int iTimeOut){
+        log.info("waiting for " + sElement);
+        int iEndTime = iTimeOut;
+        int iCount = 0;
+        boolean bFoundElement = false;
 
-        log.info("waiting for "+sElement);
-        int iEndTime=iTimeOut;
-        int iCount=0;
-        boolean bFoundElement=false;
-
-        while(iCount<iEndTime) {
+        while (iCount < iEndTime) {
             iCount++;
             try {
-                if (element.isDisplayed()&&element.isEnabled()) {
-                    log.info(sElement+" is Displayed");
+                if (element.isDisplayed() && element.isEnabled()) {
+                    log.info(sElement + " is Displayed");
                     bFoundElement = true;
                     break;
-                }else{
-                    log.info("Waiting for "+sElement+" element "+iCount+" seconds");
+                } else {
+                    log.info("Waiting for " + sElement + " element " + iCount + " seconds");
                     sleep(1);
 
                 }
             } catch (Exception e) {
-                log.info("Waiting for "+sElement+" element "+iCount+" seconds");
+                log.info("Waiting for " + sElement + " element " + iCount + " seconds");
                 sleep(1);
             }
 
         }
         return bFoundElement;
     }
-    public WebElement waitForElementToClick(WebElement element,String sElement){
 
-        WebDriverWait wait = new WebDriverWait(this.driver,30);
+    public WebElement waitForElementToClick(WebElement element, String sElement) {
+
+        WebDriverWait wait = new WebDriverWait(this.driver, 30);
 
         // Explicit Wait
         WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(element));
@@ -148,10 +144,10 @@ public class Actions {
 
     public void clearAndType(final WebElement element, final String textToType, String sElement, int iTimeOut) {
         try {
-            waitForElementToLoad(element, sElement,iTimeOut);
+            waitForElementToLoad(element, sElement, iTimeOut);
             element.clear();
             element.sendKeys(textToType);
-            log.info("Entered "+textToType+" in "+sElement+" element");
+            log.info("Entered " + textToType + " in " + sElement + " element");
         } catch (TimeoutException we) {
             log.error("Failed to retrieve the element within the time out!!");
             log.error("stack trace is" + we);
@@ -178,7 +174,7 @@ public class Actions {
         }
     }
 
-    public void javascriptClick(WebElement element,String sElement) {
+    public void javascriptClick(WebElement element, String sElement) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", element);
     }
@@ -323,7 +319,7 @@ public class Actions {
      * @param by
      * @return WebElement
      */
-    public WebElement getWebElement(By by){
+    public WebElement getWebElement(By by) {
         return driver.findElement(by);
     }
 
@@ -332,8 +328,29 @@ public class Actions {
      * @param by
      * @return WebElement
      */
-    public List<WebElement> getWebElements(By by){
+    public List<WebElement> getWebElements(By by) {
         return driver.findElements(by);
     }
 
+    public void waitForPageLoad() {
+        ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+            }
+        };
+
+        WebDriverWait wait = new WebDriverWait(driver, 100);
+        wait.until(condition);
+    }
+
+
+    public void javascriptScrollToElement(WebElement element) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+
+    public WebDriver getDriver() {
+        return driver;
+    }
 }
