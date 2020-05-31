@@ -19,7 +19,7 @@ public class HomePage extends CommonWebPage {
     @FindBy(id = "username")
     private WebElement username;
 
-    @FindBy(css="[data-cy='continueBtn']")
+    @FindBy(css="button[data-cy$='continueBtn']")
     private WebElement continueButton;
 
     @FindBy(id="password")
@@ -40,7 +40,10 @@ public class HomePage extends CommonWebPage {
     @FindBy(css = "label[for='city']")
     private WebElement searchbar;
 
-    @FindBy(css = "[data-section-index=\"0\"]")
+    @FindBy(css = "[placeholder*='Enter city']")
+    private WebElement searchbarInbox;
+
+    @FindBy(css = "[data-section-index='0']")
     private WebElement location;
 
     @FindBy(id = "checkin")
@@ -56,10 +59,9 @@ public class HomePage extends CommonWebPage {
         }
         click(loginOrCreateAccount, "loginOrCreateAccount", SHORTWAIT);
         clearAndType(username, sUsername, "sUsername", LONGWAIT);
-
-        click(continueButton,"continue button",LONGWAIT);
+        waitForElementToClick(continueButton,"continue button").submit();
         clearAndType(password, sPassword, "sPassword", LONGWAIT);
-        click(loginButton,"login button",SHORTWAIT);
+        waitForElementToClick(loginButton,"login button").submit();
 
         if (isElementDisplayed(mainModal, "main modal", 1)) {
             click(closeModal, "closeModal", SHORTWAIT);
@@ -72,7 +74,8 @@ public class HomePage extends CommonWebPage {
     }
 
     public void selectLocation(String slocation) {
-        clearAndType(searchbar, slocation, "location", LONGWAIT);
+        click(searchbar, "location", LONGWAIT);
+        clearAndType(searchbarInbox, slocation, "location", LONGWAIT);
         click(location, slocation, SHORTWAIT);
     }
 

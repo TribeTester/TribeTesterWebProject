@@ -75,6 +75,34 @@ public class Actions {
         }
     }
 
+    public boolean waitForElementInvisible(WebElement element,String sElement){
+
+        log.info("waiting for "+sElement);
+        int iEndTime=50;
+        int iCount=0;
+        boolean bFoundElement=false;
+
+        while(iCount<iEndTime) {
+            iCount++;
+            try {
+                if (!element.isEnabled()||!element.isDisplayed()) {
+                    log.info(sElement+" is Invisible");
+                    bFoundElement = true;
+                    break;
+                }else{
+                    log.info("Waiting for "+sElement+" element Invisible");
+                    sleep(1);
+
+                }
+            } catch (Exception e) {
+                log.info("Waiting for "+sElement+" element Invisible");
+                sleep(1);
+            }
+
+        }
+        return bFoundElement;
+    }
+
     public boolean waitForElementToLoad(WebElement element,String sElement){
 
         log.info("waiting for "+sElement);
@@ -101,6 +129,15 @@ public class Actions {
 
         }
         return bFoundElement;
+    }
+    public WebElement waitForElementToClick(WebElement element,String sElement){
+
+        WebDriverWait wait = new WebDriverWait(this.driver,30);
+
+        // Explicit Wait
+        WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(element));
+
+        return webElement;
     }
 
     public void clearAndType(final WebElement element, final String textToType, String sElement, int iTimeOut) {
