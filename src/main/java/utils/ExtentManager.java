@@ -6,8 +6,6 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 
-import base.BaseTest;
-
 public class ExtentManager {
 	private static ExtentReports extent;
 	private static String reportFileName = "ExtentReports" + ".html";
@@ -21,8 +19,10 @@ public class ExtentManager {
 		return extent;
 	}
 
-	// Create an extent report instance 
-	public static ExtentReports createInstance() {
+	/**
+	 * Create an extent report instance
+	 */
+	public static void createInstance() {
 		String fileName = getReportPath(reportFilepath);
 		ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(fileName);
 		htmlReporter.config().setTestViewChartLocation(ChartLocation.BOTTOM);
@@ -39,10 +39,13 @@ public class ExtentManager {
 		extent.setSystemInfo("AUT", "QA");
 		extent.setSystemInfo("User", System.getProperty("user.name"));
 
-		return extent;
 	}
 
-	// Create the report path
+	/**
+	 * Create the report path
+	 * @param path
+	 * @return
+	 */
 	private static String getReportPath(String path) {
 		File testDirectory = new File(path);
 		if (!testDirectory.exists()) {

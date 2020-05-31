@@ -10,7 +10,12 @@ import java.util.List;
 
 
 public class FileUtils {
-	
+
+	/**
+	 * Deletes report after x days
+	 * @param sReportFolderPath
+	 * @param iDays
+	 */
 	public static void deleteReportsMoreThanXDays(String sReportFolderPath, int iDays) {
 
 		String sBeforeNDaysDate = DateUtils.getDateBeforeXDays("ddMMMyyy", iDays);

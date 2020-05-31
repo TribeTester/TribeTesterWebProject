@@ -46,6 +46,11 @@ public class HomePage extends CommonWebPage {
     private WebElement datePicker;
 
 
+    /**
+     * Login to MMT web application by providing username and password
+     * @param sUsername
+     * @param sPassword
+     */
     public void loginToMakeMyTrip(String sUsername, String sPassword) {
         if (isElementDisplayed(closeIcon, "closeIcon", 1)) {
             click(closeIcon, "closeIcon", SHORTWAIT);
@@ -61,6 +66,10 @@ public class HomePage extends CommonWebPage {
 
     }
 
+    /**
+     * Click on hotels in the top menu bar
+     * @return
+     */
     public HotelPage clickOnHotel() {
         click(hotels, "hotels", SHORTWAIT);
         waitForPageLoad();

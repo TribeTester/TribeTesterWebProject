@@ -51,6 +51,12 @@ public class HotelPage extends CommonWebPage {
     @FindBy(css = "#hlistpg_fr_user_rating input")
     private WebElement userRatingFilter;
 
+
+    /**
+     * Selects the room for adults and children
+     * @param sAdultGuestNo
+     * @param sChildrenGuestNo
+     */
     @FindBy(id = "RoomType")
     private WebElement roomSection;
 
@@ -65,17 +71,29 @@ public class HotelPage extends CommonWebPage {
     }
 
 
+    /**
+     * CLicks on the apply button after selecting the number of adults and children
+     */
     public void clickApplyBtn() {
         click(applyBtn, "applyBtn", MEDIUMWAIT);
         waitForPageLoad();
     }
 
+    /**
+     * Selects the location
+     * @param slocation
+     */
     public void selectLocation(String slocation) {
         click(searchbar, "location", LONGWAIT);
         clearAndType(searchbarInbox, slocation, "location", LONGWAIT);
         click(location, slocation, SHORTWAIT);
     }
 
+    /**
+     * Select the check-in and check-out dates
+     * @param aCheckinDate
+     * @param aCheckOutDate
+     */
     public void selectCheckInCheckOutDate(String aCheckinDate, String aCheckOutDate) {
         click(checkinDate, "checkinDate", SHORTWAIT);
         sleep(1);
@@ -86,17 +104,27 @@ public class HotelPage extends CommonWebPage {
     }
 
 
+    /**
+     * Selects the options for travelling
+     */
     public void selectTravellingFor() {
         click(travellingFor, "travellingFor", SHORTWAIT);
         click(travellingForOption, "travellingForOption", SHORTWAIT);
     }
 
+    /**
+     * Searches for the hotel after selecting the location, check-in & check-out dates, rooms and travelling for options
+     */
     public void searchHotel() {
         click(searchHotel, "searchHotel", SHORTWAIT);
         waitForPageLoad();
         getDriver().navigate().refresh();
     }
 
+    /**
+     * Applies the filter by setting the minimum price range to rs.1000
+     * @param aAmount
+     */
     public void setPriceRange(int aAmount) {
         sleep(2);
         int xOffsetValue = (int) (aAmount / 500 * 3.5);
@@ -108,12 +136,19 @@ public class HotelPage extends CommonWebPage {
         log.info("Selected Minimum price range");
     }
 
+    /**
+     * Applies filter based on the user ratings
+     */
     public void checkUserRatingChkbox() {
         waitForPageLoad();
         click(userRatingFilter, "userRatingFilter", SHORTWAIT);
     }
 
 
+    /**
+     * Selects the fifth hotel after applying the filters
+     * @return
+     */
     public String selectFifthHotel() {
         List<WebElement> hotelElements = getWebElements(By.cssSelector("[id^=Listing_hotel_]"));
         javascriptScrollToElement(hotelElements.get(4));

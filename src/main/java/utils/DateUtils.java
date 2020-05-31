@@ -6,17 +6,32 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
-	
+
+	/**
+	 * Gets the timestamp in yyyy.mm.dd  format
+	 * @return
+	 */
 	public static String getTimeStamp() {
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		return timeStamp;
 	}
 
+	/**
+	 * Gets timestamp in given format
+	 * @param sFormat
+	 * @return
+	 */
 	public static String getTimeStamp(String sFormat) {
 		String timeStamp = new SimpleDateFormat(sFormat).format(new Date());
 		return timeStamp;
 	}
-	
+
+	/**
+	 * Gets date for the past days
+	 * @param sFormat
+	 * @param iDays
+	 * @return
+	 */
 	public static String getDateBeforeXDays(String sFormat, int iDays) {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -iDays);
@@ -26,6 +41,13 @@ public class DateUtils {
 		return sDateBeforeNDays;
 	}
 
+	/**
+	 * Compares the dates
+	 * @param sFormat
+	 * @param sFirstDate
+	 * @param sSecondDate
+	 * @return
+	 */
 	public static boolean isSecondDateBeforeFirstDate(String sFormat, String sFirstDate, String sSecondDate) {
 		boolean bResult;
 		SimpleDateFormat dt = new SimpleDateFormat(sFormat);

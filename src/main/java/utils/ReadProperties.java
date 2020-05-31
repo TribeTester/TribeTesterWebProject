@@ -12,6 +12,11 @@ public class ReadProperties {
 	
 	static String projectPath=new File("").getAbsolutePath();
 
+    /**
+     * Gets the config properties
+     * @param sKey
+     * @return
+     */
     public static String getConfigProperties(String sKey) {
         Properties prop;
         String sValue = null;

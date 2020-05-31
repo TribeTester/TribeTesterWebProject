@@ -27,6 +27,12 @@ public class Actions {
         this.driver = driver;
     }
 
+    /**
+     * Clicks on the element
+     * @param element
+     * @param sElement
+     * @param iTimeOut
+     */
     public void click(WebElement element, String sElement, int iTimeOut) {
         try {
             waitForElementToLoad(element, sElement, iTimeOut);
@@ -76,6 +82,12 @@ public class Actions {
         }
     }
 
+    /**
+     * Waits for element visibility
+     * @param element
+     * @param sElement
+     * @return
+     */
     public boolean waitForElementInvisible(WebElement element, String sElement) {
 
         log.info("waiting for " + sElement);
@@ -105,6 +117,13 @@ public class Actions {
     }
 
 
+    /**
+     * Waits until the element is loaded
+     * @param element
+     * @param sElement
+     * @param iTimeOut
+     * @return
+     */
     public boolean waitForElementToLoad(WebElement element, String sElement, int iTimeOut) {
 
         log.info("waiting for " + sElement);
@@ -133,6 +152,12 @@ public class Actions {
         return bFoundElement;
     }
 
+    /**
+     * Waits until the element is clickable
+     * @param element
+     * @param sElement
+     * @return
+     */
     public WebElement waitForElementToClick(WebElement element, String sElement) {
 
         WebDriverWait wait = new WebDriverWait(this.driver, 30);
@@ -143,6 +168,13 @@ public class Actions {
         return webElement;
     }
 
+    /**
+     * Clears the text and enters the required text into the element
+     * @param element
+     * @param textToType
+     * @param sElement
+     * @param iTimeOut
+     */
     public void clearAndType(final WebElement element, final String textToType, String sElement, int iTimeOut) {
         try {
             waitForElementToLoad(element, sElement, iTimeOut);
@@ -181,6 +213,13 @@ public class Actions {
     }
 
 
+    /**
+     * Gets text from the element
+     * @param element
+     * @param sElement
+     * @param iTimeOut
+     * @return
+     */
     public String getText(final WebElement element, String sElement, int iTimeOut) {
         String text = "";
         try {
@@ -306,6 +345,13 @@ public class Actions {
     }
 
 
+    /**
+     * Checks whether the element is displayed
+     * @param element
+     * @param sElementName
+     * @param iTimeOut
+     * @return
+     */
     public boolean isElementDisplayed(WebElement element, String sElementName, int iTimeOut) {
         try {
             new WebDriverWait(driver, iTimeOut).until((ExpectedConditions.visibilityOf(element)));
@@ -317,6 +363,7 @@ public class Actions {
     }
 
     /**
+     * Gets the web element
      * @param by
      * @return WebElement
      */
@@ -326,6 +373,7 @@ public class Actions {
 
 
     /**
+     * Gets the element list
      * @param by
      * @return WebElement
      */
@@ -345,6 +393,10 @@ public class Actions {
     }
 
 
+    /**
+     * Scrolls into element view
+     * @param element
+     */
     public void javascriptScrollToElement(WebElement element) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView(true);", element);

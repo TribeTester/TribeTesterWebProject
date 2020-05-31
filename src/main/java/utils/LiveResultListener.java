@@ -34,6 +34,11 @@ public class LiveResultListener extends TestListenerAdapter implements ISuiteLis
     }
 
 
+    /**
+     * Creates meta data
+     * @param suite
+     * @throws UnknownHostException
+     */
     public void createMetaData(ISuite suite) throws UnknownHostException {
 
         JSONObject metaData = new JSONObject();
@@ -59,6 +64,11 @@ public class LiveResultListener extends TestListenerAdapter implements ISuiteLis
     }
 
 
+    /**
+     * Converts string to json objects
+     * @param sStringJson
+     * @return
+     */
     public JSONObject stringToJSONObject(String sStringJson) {
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = null;
@@ -70,10 +80,18 @@ public class LiveResultListener extends TestListenerAdapter implements ISuiteLis
         return jsonObject;
     }
 
+    /**
+     * @param suite
+     */
     public void onFinish(ISuite suite) {
 
     }
 
+    /**
+     * Writes into the file
+     * @param sPath
+     * @param jsonObject
+     */
     public void writeToFile(String sPath, JSONObject jsonObject) {
         FileWriter file = null;
         try {
@@ -93,6 +111,10 @@ public class LiveResultListener extends TestListenerAdapter implements ISuiteLis
         }
     }
 
+    /**
+     * This method is invoked when any Test is passed
+     * @param result
+     */
     public synchronized void onTestStart(ITestResult result) {
 
         //Adding Test
@@ -109,6 +131,11 @@ public class LiveResultListener extends TestListenerAdapter implements ISuiteLis
         addResult(jsonObject);
     }
 
+    /**
+     * Reads the file
+     * @param sJsObjectFilePath
+     * @return
+     */
     public String readFile(String sJsObjectFilePath) {
         File file = new File(sJsObjectFilePath);
         String content = "";
@@ -123,6 +150,10 @@ public class LiveResultListener extends TestListenerAdapter implements ISuiteLis
     }
 
 
+    /**
+     * Adds the result
+     * @param jsObjectResult
+     */
     public void addResult(JSONObject jsObjectResult) {
 
         //Read file to string, remove var, and convert to JsonObject
@@ -141,6 +172,10 @@ public class LiveResultListener extends TestListenerAdapter implements ISuiteLis
 
     }
 
+    /**
+     * Updates the result
+     * @param jsObjectResult
+     */
     public void updateResult(JSONObject jsObjectResult) {
 
         //Read file to string, remove var, and convert to JsonObject
@@ -166,6 +201,10 @@ public class LiveResultListener extends TestListenerAdapter implements ISuiteLis
 
     }
 
+    /**
+     * This method is invoked on successful test
+     * @param result
+     */
     @Override
     public synchronized void onTestSuccess(ITestResult result) {
         System.out.println("onTestSuccess");
@@ -187,12 +226,17 @@ public class LiveResultListener extends TestListenerAdapter implements ISuiteLis
 
     }
 
+    /**
+     * Converts the millisecs into seconds
+     * @return
+     */
     public String millisToSecond() {
         String durationInSeconds = Long.toString((testEndTime - testStartTime) / 1000);
         return durationInSeconds;
     }
 
     /**
+     * This method is invoked when any Test is Failed
      * @param result
      */
     @Override
