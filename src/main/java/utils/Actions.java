@@ -9,10 +9,15 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import java.util.List;
+import java.text.DecimalFormat;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Actions {
-    WebDriver driver;
+   public WebDriver driver;
 
     public int SHORTWAIT = 5;
     public int MEDIUMWAIT = 8;
@@ -28,7 +33,7 @@ public class Actions {
 
     public void click(WebElement element, String sElement, int iTimeOut) {
         try {
-            waitForElementToLoad(element, sElement);
+            waitForElementToLoad(element, sElement,iTimeOut);
             element.click();
             log.info("Clicked on " + sElement);
         } catch (TimeoutException we) {
@@ -74,7 +79,6 @@ public class Actions {
                     + we);
         }
     }
-
     public boolean waitForElementInvisible(WebElement element,String sElement){
 
         log.info("waiting for "+sElement);
@@ -103,27 +107,29 @@ public class Actions {
         return bFoundElement;
     }
 
-    public boolean waitForElementToLoad(WebElement element,String sElement){
+
+
+    public boolean waitForElementToLoad(WebElement element,String sElement,int iTimeOut){
 
         log.info("waiting for "+sElement);
-        int iEndTime=50;
+        int iEndTime=iTimeOut;
         int iCount=0;
         boolean bFoundElement=false;
 
         while(iCount<iEndTime) {
             iCount++;
             try {
-                if (element.isDisplayed()) {
+                if (element.isDisplayed()&&element.isEnabled()) {
                     log.info(sElement+" is Displayed");
                     bFoundElement = true;
                     break;
                 }else{
-                    log.info("Waiting for "+sElement+" element ");
+                    log.info("Waiting for "+sElement+" element "+iCount+" seconds");
                     sleep(1);
 
                 }
             } catch (Exception e) {
-                log.info("Waiting for "+sElement+" element ");
+                log.info("Waiting for "+sElement+" element "+iCount+" seconds");
                 sleep(1);
             }
 
@@ -142,7 +148,7 @@ public class Actions {
 
     public void clearAndType(final WebElement element, final String textToType, String sElement, int iTimeOut) {
         try {
-            waitForElementToLoad(element, sElement);
+            waitForElementToLoad(element, sElement,iTimeOut);
             element.clear();
             element.sendKeys(textToType);
             log.info("Entered "+textToType+" in "+sElement+" element");
@@ -311,6 +317,23 @@ public class Actions {
             return false;
         }
 
+    }
+
+    /**
+     * @param by
+     * @return WebElement
+     */
+    public WebElement getWebElement(By by){
+        return driver.findElement(by);
+    }
+
+
+    /**
+     * @param by
+     * @return WebElement
+     */
+    public List<WebElement> getWebElements(By by){
+        return driver.findElements(by);
     }
 
 }

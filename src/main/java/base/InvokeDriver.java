@@ -18,15 +18,15 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import utils.ReadProperties;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 public class InvokeDriver {
 
-
     RemoteWebDriver driver;
-    public String chromeDriverPath = System.getProperty("user.dir")+"\\src\\main\\resources\\Driver\\chromedriver.exe";
-    public String firefoxDriverPath = System.getProperty("user.dir")+"\\src\\main\\resources\\Driver\\geckodriver.exe";
+    public String chromeDriverPath = System.getProperty("user.dir") + "\\src\\main\\resources\\Driver\\chromedriver.exe";
+    public String firefoxDriverPath = System.getProperty("user.dir") + "\\src\\main\\resources\\Driver\\geckodriver.exe";
 
     public WebDriver initChromeDriver() {
         ChromeOptions options = new ChromeOptions();
@@ -60,7 +60,7 @@ public class InvokeDriver {
         return initChromeDriver();
     }
 
-    public AppiumDriver getAppiumDriver(String sModeOfExecution) {
+    public AppiumDriver getAppiumDriver(String sModeOfExecution, Method methodName) {
         AppiumDriver appiumDriver;
         DesiredCapabilities capabilities = null;
         String sAppFilePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "app" + File.separator + "MakeMyTrip.apk";
@@ -94,6 +94,9 @@ public class InvokeDriver {
             capabilities.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
             capabilities.setCapability(AndroidMobileCapabilityType.UNICODE_KEYBOARD, true);
             capabilities.setCapability(AndroidMobileCapabilityType.RESET_KEYBOARD, true);
+            capabilities.setCapability("headspin:capture.video",true);
+            capabilities.setCapability("headspin:testName",methodName.getName());
+            capabilities.setCapability("headspin:capture",true);
         }
         appiumDriver = new AndroidDriver<>(getAppiumServerURL(sModeOfExecution), capabilities);
         return appiumDriver;
@@ -118,6 +121,8 @@ public class InvokeDriver {
 
     public RemoteWebDriver setRemoteDriver(String browserType, String ip) {
         try {
+
+
             DesiredCapabilities capability = new DesiredCapabilities();
             switch (browserType) {
                 case "firefox":

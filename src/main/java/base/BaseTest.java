@@ -27,7 +27,9 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-@Listeners({utils.TestListener.class})
+import static org.testng.Assert.fail;
+
+@Listeners({utils.TestListener.class, utils.LiveResultListener.class})
 public class BaseTest {
 
     protected WebDriver driver = null;
@@ -36,6 +38,7 @@ public class BaseTest {
     public static String sSeperator = System.getProperty("file.separator");
 
     public static final String CONFIG_FILE_PATH = "/src/main/resources/config/config.properties";
+    public static final String ANDROID_CONFIG_FILE_PATH = "/src/main/resources/config/android_config.properties";
 
     protected FileInputStream configFis;
     Properties configProp = new Properties();
@@ -85,17 +88,12 @@ public class BaseTest {
         InvokeDriver invokeDriver = new InvokeDriver();
 
         if (sModeOfExecution.toLowerCase().contains("local")) {
-            if (methodName.getName().toLowerCase().startsWith("web"))
-                this.driver = invokeDriver.setDriver(sBrowser.toLowerCase());
-            else if (methodName.getName().startsWith("mobile")) {
-                this.driver = invokeDriver.getAppiumDriver(sModeOfExecution);
-            }
+            this.driver = invokeDriver.setDriver(sBrowser.toLowerCase());
+            driver.manage().window().maximize();
+
         } else if (sModeOfExecution.toLowerCase().contains("remote")) {
-            if (methodName.getName().toLowerCase().startsWith("web"))
-                this.driver = invokeDriver.setRemoteDriver(sBrowser.toLowerCase(), remoteAddress);
-            else if (methodName.getName().startsWith("mobile")) {
-                this.driver = invokeDriver.getAppiumDriver(sModeOfExecution);
-            }
+            this.driver = invokeDriver.setRemoteDriver(sBrowser.toLowerCase(), remoteAddress);
+            driver.manage().window().maximize();
         } else {
             Assert.fail("Please define mode of execution in either config or testng xml file");
         }
@@ -116,15 +114,7 @@ public class BaseTest {
 
     }
 
-    /**
-     * this method quit the driver after the execution of test(s)
-     */
-    @AfterMethod
-    public void teardown() {
-        log.info("-----------Shutting down driver-----------");
-        driver.quit();
 
-    }
 
 
     public void step(String sStepMessage) {
@@ -175,6 +165,42 @@ public class BaseTest {
         log.info("Navigating to URL");
         driver.get(sURL);
         log.info("Navigated to URL");
+
+    }
+
+    /**
+     * purpose of this method is to load testdata properties file so that it can be
+     * used to access test data from properties file to testcase
+     *
+     * @param sPropertiesFileName
+     */
+    public void setTestDataProperties(String sPropertiesFileName) {
+
+        String sTestDataPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "testdata" + File.separator;
+        System.out.println(" sTestDataPath : " + sTestDataPath);
+
+        sTestDataPath = sTestDataPath + sPropertiesFileName + ".properties";
+        System.out.println(" sTestDataPath : " + sTestDataPath);
+
+        try {
+            FileInputStream fis = new FileInputStream(sTestDataPath);
+
+            properties = new Properties();
+            properties.load(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail("Exception occured while loading test data");
+        }
+    }
+
+    /**
+     * this method quit the driver after the execution of test(s)
+     */
+//    @AfterMethod
+    public void teardown() {
+        log.info("-----------Shutting down driver-----------");
+        driver.quit();
 
     }
 
