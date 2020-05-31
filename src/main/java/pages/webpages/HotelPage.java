@@ -119,6 +119,8 @@ public class HotelPage extends CommonWebPage {
         click(searchHotel, "searchHotel", SHORTWAIT);
         waitForPageLoad();
         getDriver().navigate().refresh();
+        waitForPageLoad();
+        sleep(3);
     }
 
     /**

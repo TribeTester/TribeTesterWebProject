@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.webpages.HomePage;
 import pages.webpages.HotelPage;
+import pages.webpages.ReviewYourBookingPage;
 import utils.ReadProperties;
 
 public class HackathonTest extends BaseTest {
@@ -16,6 +17,12 @@ public class HackathonTest extends BaseTest {
     HomePage homePage;
     HotelPage hotelPage;
 
+    ReviewYourBookingPage reviewYourBookingPage;
+    private String sLocation;
+    private String sCheckInDate;
+    private String sCheckOutDate;
+    private String sGuest;
+
     @BeforeMethod
     public void loadData() {
         homePage = new HomePage(driver);
@@ -26,6 +33,14 @@ public class HackathonTest extends BaseTest {
         setTestDataProperties("WebMakeMyTripTestData");
         sUsername = getProperty("EmailID");
         sPassword = getProperty("Password");
+
+        sLocation = getProperty("Location");
+        sCheckInDate = getProperty("CheckInDate");
+        sCheckOutDate = getProperty("CheckOutDate");
+        sGuest = getProperty("Guest");
+
+        reviewYourBookingPage = new ReviewYourBookingPage(driver);
+
 
     }
 
@@ -42,13 +57,13 @@ public class HackathonTest extends BaseTest {
         hotelPage = homePage.clickOnHotel();
 
         step("select location");
-        hotelPage.selectLocation("Goa");
+        hotelPage.selectLocation(sLocation);
 
         step("Select checkin and checkout date");
-        hotelPage.selectCheckInCheckOutDate("Jun 14", "Jun 16");
+        hotelPage.selectCheckInCheckOutDate(sCheckInDate, sCheckOutDate);
 
         step("Select rooms and guests");
-        hotelPage.selectAdultAndChildrenGuest("2", "2");
+        hotelPage.selectAdultAndChildrenGuest(sGuest, sGuest);
 
         step("Select travelling reason");
         hotelPage.selectTravellingFor();
@@ -63,7 +78,7 @@ public class HackathonTest extends BaseTest {
         hotelPage.checkUserRatingChkbox();
 
         step("Scroll to fifth hotel and click on it");
-        String sCurrentWindow=hotelPage.getCurrentWindowHandle();
+        String sCurrentWindow = hotelPage.getCurrentWindowHandle();
         String sHotelName = hotelPage.selectFifthHotel();
 
         step("Go to room section");
@@ -73,7 +88,17 @@ public class HackathonTest extends BaseTest {
         step("Capture the information of room category ");
         hotelPage.selectRoom();
 
+        step("Add the traveller information");
+        reviewYourBookingPage.addTravellerInformation();
 
+        step("Select two special request");
+        reviewYourBookingPage.selectTwoSpecialRequestChkBx();
+
+        step("Uncheck Donation checkbox");
+        reviewYourBookingPage.uncheckDonation();
+
+        step("Click on Paynow.");
+        reviewYourBookingPage.clickPayNow();
 
 
     }
