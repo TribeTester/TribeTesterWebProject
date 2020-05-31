@@ -76,6 +76,8 @@ public class Actions {
     }
 
     public boolean waitForElementToLoad(WebElement element,String sElement){
+
+        log.info("waiting for "+sElement);
         int iEndTime=50;
         int iCount=0;
         boolean bFoundElement=false;
@@ -84,13 +86,16 @@ public class Actions {
             iCount++;
             try {
                 if (element.isDisplayed()) {
+                    log.info(sElement+" is Displayed");
                     bFoundElement = true;
                     break;
                 }else{
+                    log.info("Waiting for "+sElement+" element ");
                     sleep(1);
 
                 }
             } catch (Exception e) {
+                log.info("Waiting for "+sElement+" element ");
                 sleep(1);
             }
 
