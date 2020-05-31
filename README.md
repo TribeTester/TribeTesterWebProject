@@ -84,12 +84,12 @@ mvn clean install -DskipTests=true
 ---
 
 __Configuration in Config.properties:__
-#Possible values for ModeOfExecution Local|Remote
-ModeOfExecution=Local
-#Possible values for Browser Chrome|Firefox
-Browser=chrome
-WebAppUrl= Make my trip url
-RemoteServerHeadSpin = Your remote URL of Headspin instance
+#Possible values for ModeOfExecution Local|Remote<br>
+ModeOfExecution=Local<br>
+#Possible values for Browser Chrome|Firefox<br>
+Browser=chrome<br>
+WebAppUrl= Make my trip url<br>
+RemoteServerHeadSpin = Your remote URL of Headspin instance<br>
 
 
 
