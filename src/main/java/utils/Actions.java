@@ -59,24 +59,18 @@ public class Actions {
      * @param element - mobile element that should be checked.
      */
     public void waitForElementVisibility(final WebElement element, String sElement, int timeOut) {
-        final int pollingFrequencey = 1;
-        if (element == null) {
-            throw new IllegalArgumentException("mobile element should not be null,please check element details");
-        }
-
         try {
-            final Wait<WebDriver> wait = new FluentWait<>(driver).withTimeout(timeOut, TimeUnit.SECONDS)
-                    .pollingEvery(pollingFrequencey, TimeUnit.SECONDS).ignoring(NoSuchElementException.class);
+            final Wait<WebDriver> wait = new WebDriverWait(driver, timeOut);
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (TimeoutException te) {
-            log.error("Waiting for element presence on the DOM!! " + "element is not present within the Timeout !!!");
+            log.error("Waiting for element presence on the DOM!! " + sElement + "element is not present within the Timeout !!!");
             log.error("stack trace" + te);
-            Assert.fail("Waiting for element presence on the DOM!! " + "element is not present within the Timeout !!!"
+            Assert.fail("Waiting for element presence on the DOM!! " + sElement + "element is not present within the Timeout !!!"
                     + te);
         } catch (WebDriverException we) {
-            log.error("Waiting for element presence on the DOM!! " + "element is not present within the Timeout !!!  ");
+            log.error("Waiting for element presence on the DOM!! " + sElement + "element is not present within the Timeout !!!  ");
             log.error("stack trace" + we);
-            Assert.fail("Waiting for element presence on the DOM!! " + "element is not present within the Timeout !!!"
+            Assert.fail("Waiting for element presence on the DOM!! " + sElement + "element is not present within the Timeout !!!"
                     + we);
         }
     }
@@ -238,7 +232,7 @@ public class Actions {
     }
 
 
-    public boolean isElementDisplayed(WebElement element,String sElementName,int iTimeOut){
+    public boolean isElementDisplayed(WebElement element, String sElementName, int iTimeOut) {
         try {
             new WebDriverWait(driver, iTimeOut).until((ExpectedConditions.visibilityOf(element)));
             return true;

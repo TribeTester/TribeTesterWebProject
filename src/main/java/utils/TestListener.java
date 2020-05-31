@@ -2,6 +2,9 @@ package utils;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ISuite;
 import org.testng.ISuiteListener;
@@ -127,6 +130,18 @@ public class TestListener extends TestListenerAdapter implements ISuiteListener 
     }
 
     public void onFinish(ISuite suite) {
+        ExtentTestManager.endTest();
+        ExtentManager.getInstance().flush();
+        String sExtentReportPath = sLatestReportFolderPath + sSeperator + "ExtentReports" + ".html";
+        sExtentReportPath = "file://" + sExtentReportPath;
+        if (Boolean.valueOf(ReadProperties.getConfigProperties("DisplayReportInBrowserOrNot"))&&new File(sExtentReportPath).exists()) {
+            WebDriverManager.chromedriver().setup();
+
+            WebDriver driver = new ChromeDriver();
+            driver.manage().window().maximize();
+
+            driver.get(sExtentReportPath);
+        }
 
     }
 

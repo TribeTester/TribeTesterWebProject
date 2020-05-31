@@ -10,7 +10,7 @@ import base.BaseTest;
 
 public class ExtentManager {
 	private static ExtentReports extent;
-	private static String reportFileName = "WhistleExtentReports" + ".html";
+	private static String reportFileName = "ExtentReports" + ".html";
 	private static String fileSeperator = System.getProperty("file.separator");
 	private static String reportFilepath = TestListener.sLatestReportFolderPath;
 	private static String reportFileLocation = reportFilepath + fileSeperator + reportFileName;
@@ -27,7 +27,6 @@ public class ExtentManager {
 		ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(fileName);
 		htmlReporter.config().setTestViewChartLocation(ChartLocation.BOTTOM);
 		htmlReporter.config().setChartVisibilityOnOpen(true);
-//	        htmlReporter.config().setTheme(Theme);
 		htmlReporter.config().setDocumentTitle(reportFileName);
 		htmlReporter.config().setEncoding("utf-8");
 		htmlReporter.config().setReportName(reportFileName);
