@@ -6,6 +6,10 @@
 	<artifactId>TribeTesterWebMobileProject</artifactId>
 	<version>1.0</version>
 
+	<properties>
+		<TestNGSuiteFileName>testng.xml</TestNGSuiteFileName>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>io.appium</groupId>
